@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	
+    <session-factory>
+       	<!-- Properties -->
+       	<property name="show_sql">false</property>
+       	<property name="hibernate.format_sql">false</property>
+      	<property name="hibernate.generate_statistics">false</property>
+		<property name="hibernate.use_sql_comments">false</property>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.password">RezeptMysql</property>
+        
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/rezeptdatabase</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+   		
+   		<!-- Mapping files -->
+   		<mapping resource="User.hbm.xml"/>
+   		<mapping resource="Ort.hbm.xml"/>
+   
+    </session-factory>
+     
+   
+</hibernate-configuration>
