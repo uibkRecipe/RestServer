@@ -1,17 +1,18 @@
 package persistent.classes;
 
-import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
-public class User{
-	private String user_name;
+
+public class User {
+	private String username;
 	private String password;
 	private String email;
-	private String vname;
-	private String nname;
+	private String firstname;
+	private String lastname;
+	private int isActive;
+	private byte[] foto;
 	
-	/* Should be filled only by request with a query*/
-	//private List<String> friends = new ArrayList<String>();
+	
+
 	/** Hibernate default constructor */
 	public User(){
 		
@@ -23,11 +24,11 @@ public class User{
 	 * @param email
 	 */
 	public User(String uname, String password, String email){
-		this.user_name = uname;
+		this.username = uname;
 		this.password = password;
 		this.email = email;
-		this.vname = null;
-		this.nname = null;
+		this.firstname = null;
+		this.lastname = null;
 	}
 	
 	/**
@@ -38,64 +39,64 @@ public class User{
 	 * @param vname surname of the new user
 	 * @param nname name of the new user
 	 */
-	public User(String uname, String password, String email, String vname, String nname){
-		this.user_name = uname;
+	public User(String uname, String password, String email, String firstname, String lastname){
+		this.username = uname;
 		this.password = password;
 		this.email = email;
-		this.vname = vname;
-		this.nname = nname;
+		this.firstname = firstname;
+		this.lastname = lastname;
 	}
 
-	public String getUser_name() {
-		return user_name;
+	
+	
+	
+	
+	public String getUsername() {
+		return username;
 	}
-
-	public void setUser_name(String user_name) {
-		this.user_name = user_name;
+	public void setUsername(String username) {
+		this.username = username;
 	}
-
 	public String getPassword() {
 		return password;
 	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 	public String getEmail() {
 		return email;
 	}
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	public String getVname() {
-		return vname;
+	public String getFirstname() {
+		return firstname;
 	}
-
-	public void setVname(String vname) {
-		this.vname = vname;
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
 	}
-
-	public String getNname() {
-		return nname;
+	public String getLastname() {
+		return lastname;
 	}
-
-	public void setNname(String nname) {
-		this.nname = nname;
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
 	}
-	/*
-	public List<String> getFriends() {
-		return friends;
+	public int getIsActive() {
+		return isActive;
 	}
-
-	public void setFriends(List<String> friends) {
-		this.friends = friends;
+	public void setIsActive(int isActive) {
+		this.isActive = isActive;
 	}
-	*/
+	public byte[] getFoto() {
+		return foto;
+	}
+	public void setFoto(byte[] foto) {
+		this.foto = foto;
+	}
 	public String toString(){
-		return "ID = " + user_name + "email = " + email;
+		return "ID = " + username + ", email = " + email + ", isActive" + isActive;
 	}
+	
+	
 
 }
