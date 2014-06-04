@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 29, 2014 7:55:05 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="persistent.classes.Recipe" table="RECIPE">
+        <id name="ID" type="int">
+            <column name="ID" />
+            <generator class="assigned" />
+        </id>
+        <property name="autor" type="java.lang.String">
+            <column name="AUTOR" />
+        </property>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" />
+        </property>
+        <property name="subtitle" type="java.lang.String">
+            <column name="SUBTITLE" />
+        </property>
+        <property name="time" type="int">
+            <column name="TIME" />
+        </property>
+        <property name="cooked" type="int">
+            <column name="COOKED" />
+        </property>
+        <property name="numberOfRatings" type="int">
+            <column name="NUMBEROFRATINGS" />
+        </property>
+        <property name="averageRating" type="float">
+            <column name="AVERAGERATING" />
+        </property>
+ 		<property name="preparation" type="java.lang.String">
+ 			<column name="PREPARATION"/>
+ 		</property>
+
+        <property name="foto" type="binary">
+            <column name="FOTO" />
+        </property>
+    
+    </class>
+</hibernate-mapping>

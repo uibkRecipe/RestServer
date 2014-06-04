@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 29, 2014 7:51:51 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="persistent.classes.City" table="CITY">
+        <id name="ID" type="int">
+            <column name="ID" />
+            <generator class="assigned" />
+        </id>
+        <property name="country" type="java.lang.String">
+            <column name="COUNTRY" />
+        </property>
+        <property name="region" type="java.lang.String">
+            <column name="REGION" />
+        </property>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" />
+        </property>
+        <property name="latitude" type="double">
+            <column name="LATITUDE" />
+        </property>
+        <property name="longitude" type="double">
+            <column name="LONGITUDE" />
+        </property>
+    </class>
+</hibernate-mapping>
