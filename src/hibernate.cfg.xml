@@ -13,14 +13,23 @@
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="hibernate.connection.password">RezeptMysql</property>
         
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/rezeptdatabase</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/RECIPEDB</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+   		<property name="transaction.auto_close_session">false</property>
    		
-   		<!-- Mapping files -->
-   		<mapping resource="User.hbm.xml"/>
-   		<mapping resource="Ort.hbm.xml"/>
-   
+   		<!--  Mapping files --> 
+   		<mapping resource="City.hbm.xml"/>
+   		<mapping resource="ComposedOf.hbm.xml"/>
+   		<mapping resource="Country.hbm.xml"/>
+   		<mapping resource="Friend.hbm.xml"/>
+   		<mapping resource="Ingredient.hbm.xml"/>
+   		<mapping resource="IngredientType.hbm.xml"/>
+		<mapping resource="Rating.hbm.xml"/>
+   		<mapping resource="Recipe.hbm.xml"/>
+    	<mapping resource="Region.hbm.xml"/> 
+    	<mapping resource="User.hbm.xml"/> 
+    	
     </session-factory>
      
    

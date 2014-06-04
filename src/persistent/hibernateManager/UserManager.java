@@ -47,7 +47,9 @@ public class UserManager extends PersistentManager implements UserManagerInterfa
 			session.save(user);
 			session.getTransaction().commit();
 		} catch (Exception e) {
-			System.out.println("We are sorry but your username already exists");
+			try{
+				session.getTransaction().rollback();
+			}catch(Exception e1){}
 			success = false;
 		} finally {
 			session.close();

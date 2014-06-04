@@ -1,35 +1,33 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated May 10, 2014 6:26:24 PM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated May 29, 2014 8:45:30 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="persistent.classes.User" table="user">
-        <id name="user_name" type="java.lang.String">
-            <column name="user_name" />
+    <class name="persistent.classes.User" table="USER">
+        <id name="username" type="java.lang.String" access="field">
+            <column name="USERNAME" />
             <generator class="assigned" />
         </id>
         <property name="password" type="java.lang.String">
-            <column name="password" />
+            <column name="PASSWORD" />
         </property>
         <property name="email" type="java.lang.String">
-            <column name="email" />
+            <column name="EMAIL" />
         </property>
-        <property name="vname" type="java.lang.String">
-            <column name="vorname" />
+        <property name="firstname" type="java.lang.String">
+            <column name="FIRSTNAME" />
         </property>
-        <property name="nname" type="java.lang.String">
-            <column name="nachname" />
+        <property name="lastname" type="java.lang.String" access="field">
+            <column name="LASTNAME" />
         </property>
-       <!-- NOT SURE
-          <list name="friends" inverse="false" table="USER" lazy="true">
-            <key>
-                <column name="USER_NAME" />
-            </key>
-            <list-index></list-index>
-            <element type="java.lang.String">
-                <column name="FRIENDS" />
-            </element>
-        	</list>
-        -->
+        <property name="isActive" type="int">
+        	<column name="ISACTIVE" />
+        </property>
+         
+
+        <property name="foto" type="binary">
+            <column name="FOTO"/>
+        </property>
+  
     </class>
 </hibernate-mapping>
