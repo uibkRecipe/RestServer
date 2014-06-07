@@ -347,9 +347,9 @@ public class HibernateManager {
 				.addIngredientToRecipe(recipeID,
 						recIngredients.getIngredients(),
 						recIngredients.getQuantities())) {
-			return Response.status(200).entity(recIngredients).build();
+			return Response.status(200).entity(true).build();
 		}
-		return Response.status(200).entity(recIngredients).build();
+		return Response.status(200).entity(false).build();
 	}
 
 	//
