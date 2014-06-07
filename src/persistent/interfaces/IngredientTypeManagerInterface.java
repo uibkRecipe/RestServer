@@ -14,7 +14,7 @@ public interface IngredientTypeManagerInterface {
 	 * 
 	 * @return a list containing all the names of the ingredients
 	 */
-	public List<String> getAllIngredientType();
+	public List<IngredientType> getAllIngredientType();
 	/**
 	 * Returns a list containing all the ingredients' names, that
 	 * matches the given string name

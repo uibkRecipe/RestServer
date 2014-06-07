@@ -1,17 +1,1 @@
-/Ort.hbm.xml
-/Rezept.hbm.xml
-/User.hbm.xml
-/Zutaten.hbm.xml
-/Zutatentyp.hbm.xml
-/hibernate.cfg.xml
 /persistent/
-/Snippet/
-/City.hbm.xml
-/ComposedOf.hbm.xml
-/Country.hbm.xml
-/Friend.hbm.xml
-/Ingredient.hbm.xml
-/IngredientType.hbm.xml
-/Rating.hbm.xml
-/Recipe.hbm.xml
-/Region.hbm.xml
