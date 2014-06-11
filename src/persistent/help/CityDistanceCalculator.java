@@ -1,5 +1,8 @@
 package persistent.help;
 
+import persistent.classes.City;
+import persistent.hibernateManager.HibernateUtil;
+
 public class CityDistanceCalculator implements CityDistance {
 
 
@@ -7,8 +10,6 @@ public class CityDistanceCalculator implements CityDistance {
 	public  double calcDistance(double latitudeA, double longitudeA,
 			double latitudeB, double longitudeB) {
 			double R = 6372.795477598;
-				
-				 
 			double radLatA = Math.PI * latitudeA / 180;
 			double radLonA = Math.PI * longitudeA / 180;
 			double radLatB = Math.PI * latitudeB / 180;
@@ -21,11 +22,18 @@ public class CityDistanceCalculator implements CityDistance {
 			return P * R;
 			
 	}
+	//Für rest server
+	public  double calcDistance(int cityID1, int cityID2) {
+			City c1 = HibernateUtil.getInstance().findCityByID(cityID1);
+			City c2 = HibernateUtil.getInstance().findCityByID(cityID2);
+			return calcDistance(c1.getLatitude(), c1.getLongitude(), c2.getLatitude(), c2.getLongitude());
+	}
 	
 	
 	public static void main(String[] args) {
 		//B = BOLZANO A = VERONA
-		System.out.println(new CityDistanceCalculator().calcDistance(40.7, 17.3333 , 46.5167, 11.3667));
+		System.out.println(HibernateUtil.getInstance().findCityByID(1000) + " " + HibernateUtil.getInstance().findCityByID(1001));;
+		System.out.println(new CityDistanceCalculator().calcDistance(1000, 1001));
 		
 	}
 

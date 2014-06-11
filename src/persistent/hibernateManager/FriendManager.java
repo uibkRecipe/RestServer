@@ -18,6 +18,7 @@ public class FriendManager extends PersistentManager implements FriendManagerInt
 		super(sessionFactory);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<String> getFriend(String username){
 		List<String> lf = new ArrayList<String>();
 		List<String> lf1 = new ArrayList<String>();

@@ -128,7 +128,9 @@ public class RecipeManager extends PersistentManager implements RecipeManagerInt
 	
 
 
-
+	public List<Recipe> getAllRecipes(){
+		return findRecipeByCategory();
+	}
 
 
 	@Override

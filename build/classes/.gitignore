@@ -1,1 +1,12 @@
+/City.hbm.xml
+/ComposedOf.hbm.xml
+/Country.hbm.xml
+/Friend.hbm.xml
+/Ingredient.hbm.xml
+/IngredientType.hbm.xml
+/Rating.hbm.xml
+/Recipe.hbm.xml
+/Region.hbm.xml
+/User.hbm.xml
+/hibernate.cfg.xml
 /persistent/

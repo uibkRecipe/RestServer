@@ -79,6 +79,18 @@ public class User {
 		this.country = country;
 		this.isActive = 1;
 	}
+	
+	public User(String uname, String password, String email, String firstname, String lastname, int city, City c){
+		this.username = uname;
+		this.password = password;
+		this.email = email;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.city = c.getID();
+		this.country = c.getCountry();
+		this.isActive = 1;
+	}
+
 
 	/**
 	 * Constructor to create a new user, with asking for surname and name

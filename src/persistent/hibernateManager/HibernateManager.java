@@ -2,6 +2,7 @@ package persistent.hibernateManager;
 
 
 
+import java.io.File;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -285,6 +286,28 @@ public class HibernateManager {
 		if (recipeManager.removeRecipe(username, recipeID))
 			return Response.status(200).entity(true).build();
 		return Response.status(200).entity(false).build();
+	}
+	
+	
+	
+	public List<Recipe> findRecipeByCategory(String category) {
+		return recipeManager.findRecipeByCategory(category);
+	}	
+
+	public boolean setRecipeFoto(String username, int recipeID, File f) {
+		return recipeManager.setRecipeFoto(username, recipeID, f);
+	}
+
+
+	public Recipe findRecipeById(int recipeID) {
+		return recipeManager.findRecipeById(recipeID);
+	}
+
+	@GET
+	@Path("/getAllRecipes")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Recipe> getAllRecipes() {
+		return recipeManager.getAllRecipes();
 	}
 
 //	public List<Recipe> getRezeptByCategory(Category C) {

@@ -60,6 +60,7 @@ public class CountryManager extends PersistentManager implements CountryManagerI
 		return c;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<String> findCountryByName(String countryName){
 		List<String> lz = new ArrayList<>();
 		Session session = sessionFactory.openSession();
@@ -67,13 +68,14 @@ public class CountryManager extends PersistentManager implements CountryManagerI
 		try {
 			SQLQuery query = session.createSQLQuery("SELECT NAME FROM COUNTRY WHERE"
 					+ " name LIKE '" + countryName + "%'");
-			lz = query.list();
+			lz = (List<String>) query.list();
 		} catch(Exception e){
 			t.rollback();
 		}
 		return lz;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public String  findCountryCodeByName(String countryName){
 		List<String> lz = new ArrayList<>();
 		Session session = sessionFactory.openSession();
@@ -81,7 +83,7 @@ public class CountryManager extends PersistentManager implements CountryManagerI
 		try {
 			SQLQuery query = session.createSQLQuery("SELECT CODE FROM COUNTRY WHERE"
 					+ " name LIKE '" + countryName + "%'");
-			lz = query.list();
+			lz = (List<String>) query.list();
 		} catch(Exception e){
 			t.rollback();
 		}

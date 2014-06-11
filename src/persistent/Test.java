@@ -15,12 +15,6 @@ public class Test {
 		HibernateUtil hm = HibernateUtil.getInstance();
 		
 	
-		hm.addFriend("testUser", "testUser1");
-		
-		hm.addFriend("testUser", "TEST_ACTIVE_USER");
-		
-		hm.addFriend("testUser", "TEST_NOT_ACTIVE_USER");
-		
 		hm.closeSession();
 	}
 }

@@ -264,7 +264,11 @@ public class HibernateUtil implements HibernateUtilInterface{
 		return recipeManager.findRecipeById(recipeID);
 	}
 
-	
+
+	@Override
+	public List<Recipe> getAllRecipes() {
+		return recipeManager.getAllRecipes();
+	}
 	/***************************************************************
 	 * 
 	 * IngredientType manager
@@ -381,6 +385,8 @@ public class HibernateUtil implements HibernateUtilInterface{
 		return cityManager.findCityByID(u.getCity());
 		
 	}
+
+
 
 
 

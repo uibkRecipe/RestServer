@@ -16,4 +16,8 @@ public interface  CityDistance {
 	 */
 	public double calcDistance(double latitudeA, double longitudeA, 
 			double latitudeB, double longitudeB);
+	
+	
+	public  double calcDistance(int cityID1, int cityID2);
+	
 }

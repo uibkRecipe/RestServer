@@ -86,6 +86,7 @@ public class ComposedOfManager extends PersistentManager implements ComposedOfMa
 	
 	
 		
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Recipe> findRecipeByIngredient(List<IngredientType> lz) {
 		if(lz.isEmpty()){
@@ -117,6 +118,7 @@ public class ComposedOfManager extends PersistentManager implements ComposedOfMa
 	}
 
 	
+	@SuppressWarnings("unchecked")
 	public List<Recipe> execFindrecipeByIngredientQuery(String query){
 		List<Recipe> recipes = new ArrayList<>();
 		Transaction t = null;

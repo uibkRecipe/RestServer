@@ -55,4 +55,6 @@ public interface RecipeManagerInterface {
 	 * @return the Recipe if the ID was found, null otherwise
 	 */
 	public Recipe findRecipeById(int recipeID);
+	
+	public  List<Recipe> getAllRecipes();
 }
