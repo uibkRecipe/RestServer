@@ -8,13 +8,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import persistent.classes.City;
-import persistent.classes.Ingredient;
 import persistent.classes.IngredientType;
-import persistent.classes.Recipe;
 import persistent.interfaces.IngredientTypeManagerInterface;
 
-public class IngredientTypeManager extends PersistentManager
+public class IngredientTypeManager extends PersistentManager 
 implements IngredientTypeManagerInterface{
 	/**
 	 * Constructor
@@ -30,13 +27,12 @@ implements IngredientTypeManagerInterface{
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<IngredientType> getAllIngredientType(){
+	public List<IngredientType> findAllIngredientType(){
 		List<IngredientType> lz = new ArrayList<IngredientType>();
 		Session session = sessionFactory.openSession();
 		Transaction t = session.beginTransaction();
 		try {
-			SQLQuery query = session.createSQLQuery("SELECT * FROM INGREDIENTTYPE");
-			query.addEntity(IngredientType.class);
+			SQLQuery query = session.createSQLQuery("SELECT NAME FROM INGREDIENTTYPE").addEntity(IngredientType.class);
 			lz = query.list();
 		} catch(Exception e){
 			t.rollback();
@@ -96,4 +92,6 @@ implements IngredientTypeManagerInterface{
 		
 		
 	}
+
+
 }

@@ -2,8 +2,6 @@ package persistent.interfaces;
 
 import java.util.List;
 
-import org.hibernate.Session;
-
 import persistent.classes.City;
 
 public interface CityManagerInterface {
@@ -32,4 +30,10 @@ public interface CityManagerInterface {
 		 * @return
 		 */
 		public List<City> findCityNameByCountryAndRegion(String country, String region);
+		
+		/**
+		 *  Get City with country
+		 * 
+		 */
+		 public List<City> findCityByCountry(String country);
 }

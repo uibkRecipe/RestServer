@@ -152,7 +152,7 @@ public class HibernateManager {
 	@GET
 	@Path("/country")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<String> getCountryList() {
+	public List<Country> getCountryList() {
 		return countryManager.getCountryList();
 	}
 
@@ -160,7 +160,7 @@ public class HibernateManager {
 	@Path("/countryByCode/{countryCode}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Country getCountryByCode(@PathParam("countryCode") String countryCode) {
-		return countryManager.getCountryByCode(countryCode);
+		return countryManager.findCountryByCode(countryCode);
 	}
 
 	@GET
@@ -206,6 +206,13 @@ public class HibernateManager {
 			@PathParam("country") String country,
 			@PathParam("region") String region) {
 		return cityManager.findCityNameByCountryAndRegion(country, region);
+	}
+	
+	
+	@GET
+	@Path("/cityByCountry/{country}")
+	public List<City> findCityByCountry(@PathParam("country") String country) {
+		return cityManager.findCityByCountry(country);	
 	}
 
 	/******************************************************************
@@ -293,12 +300,12 @@ public class HibernateManager {
 	 * IngredientType manager
 	 * 
 	 ***************************************************************/
-	@GET
-	@Path("/ingredientType")
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<IngredientType> getAllIngredientType() {
-		return ingredientTypeManager.getAllIngredientType();
-	}
+//	@GET
+//	@Path("/ingredientType")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public List<IngredientType> getAllIngredientType() {
+//		return ingredientTypeManager.getAllIngredientType();
+//	}
 
 	@GET
 	@Path("/ingredientType/{name}")
@@ -391,9 +398,9 @@ public class HibernateManager {
 	@GET
 	@Path("/region/{countryCode}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Region> getRegionByCountryCode(
+	public List<Region> findRegionByCountryCode(
 			@PathParam("countryCode") String Code) {
-		return regionManager.getRegionByCountryCode(Code);
+		return regionManager.findRegionByCountryCode(Code);
 	}
 
 }

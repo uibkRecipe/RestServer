@@ -1,5 +1,8 @@
 package persistent.hibernateManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -34,5 +37,28 @@ public class IngredientManager extends PersistentManager implements IngredientMa
 		
 		return success;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Ingredient> findIngredientsByIngredientType(int ingredientTypeID){
+		String query = "SELECT * FROM INGREDIENT WHERE INGREDIENTSTYPEID='" + ingredientTypeID + "'";
+		Transaction t = null;
+		Session session = null;
+		List<Ingredient> l = new ArrayList<>();
+		try {
+			session = sessionFactory.openSession();
+			t = session.beginTransaction();
+			l = (List<Ingredient>) session.createSQLQuery(query).addEntity(Ingredient.class).list();
+			t.commit();
+		} catch (Exception e){
+			t.rollback();
+			
+		}finally {
+			if(session != null)
+				session.close();
+		}
+		return l;
+	}
+
+
 
 }

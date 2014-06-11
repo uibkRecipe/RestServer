@@ -8,12 +8,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import persistent.classes.City;
-import persistent.classes.Country;
 import persistent.interfaces.CityManagerInterface;
 /**
  * 
  * @author mirko
- *
+ *http://www.vogella.com/tutorials/Mockito/article.html
  */
 public class CityManager extends PersistentManager implements CityManagerInterface
   {
@@ -36,17 +35,19 @@ public class CityManager extends PersistentManager implements CityManagerInterfa
 	public boolean addCity(City city){
 		boolean success = true;
 		Session session = sessionFactory.openSession();
-		session.beginTransaction();
+		Transaction t = null;
 		/** If the object is not already contained **/
 		try {
+			t = session.beginTransaction();
 			session.save(city);
 			
 		} catch (Exception e) {
-			System.out.println("ERROR " + e.getMessage());;
+			e.printStackTrace();
 			success = false;
-			session.getTransaction().rollback();
+			if(t != null)
+				t.rollback();
 		} 
-		session.getTransaction().commit();
+		t.commit();
 		session.close();
 		return success;
 	}
@@ -58,11 +59,16 @@ public class CityManager extends PersistentManager implements CityManagerInterfa
 	public City findCityByID(int cityID){
 		City city = null;
 		Session session = sessionFactory.openSession();
-		session.beginTransaction();
+		Transaction t = null;
 		try {
+			
+			t = session.beginTransaction();
 			city = (City) session.get(City.class, cityID);
+			
 		} catch (Exception e) {
-			System.out.println("City " + city + "could not be found");
+			if(t != null)
+				t.rollback();
+			e.printStackTrace();
 		} finally {
 			session.close();
 		}
@@ -92,6 +98,7 @@ public class CityManager extends PersistentManager implements CityManagerInterfa
 		}
 		return lo;
 	}
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<City> findCityNameByCountryAndRegion(String country,
 			String region) {
@@ -101,6 +108,25 @@ public class CityManager extends PersistentManager implements CityManagerInterfa
 		try {
 			t = session.beginTransaction();
 			cityList = (List<City>) session.createSQLQuery("SELECT c.* FROM CITY c WHERE c.COUNTRY='" + country +"' AND c.REGION='" + region + "'").addEntity("c", City.class).list();
+		} catch (Exception e){
+			if(t != null){
+				t.rollback();
+			}
+			e.printStackTrace();
+					
+		}
+		return cityList;
+		
+	}
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<City> findCityByCountry(String country) {
+		List<City> cityList = new ArrayList<>();
+		Session session = sessionFactory.openSession();
+		Transaction t = null;
+		try {
+			t = session.beginTransaction();
+			cityList = (List<City>) session.createSQLQuery("SELECT c.* FROM CITY c WHERE c.COUNTRY='" + country +"'").addEntity("c", City.class).list();
 		} catch (Exception e){
 			if(t != null){
 				t.rollback();

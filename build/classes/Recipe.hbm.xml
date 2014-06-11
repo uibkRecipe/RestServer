@@ -26,7 +26,7 @@
         <property name="numberOfRatings" type="int">
             <column name="NUMBEROFRATINGS" />
         </property>
-        <property name="averageRating" type="float">
+        <property name="averageRating" type="java.lang.Float">
             <column name="AVERAGERATING" />
         </property>
  		<property name="preparation" type="java.lang.String">
@@ -36,6 +36,8 @@
         <property name="foto" type="binary">
             <column name="FOTO" />
         </property>
-    
+    	<property name="category" type="java.lang.String">
+    		<column name="CATEGORY" />
+    	</property>
     </class>
 </hibernate-mapping>

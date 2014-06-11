@@ -16,7 +16,7 @@ public class RegionManager extends PersistentManager implements RegionManagerInt
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Region> getRegionByCountryCode(String Code){
+	public List<Region> findRegionByCountryCode(String Code){
 		Session session = sessionFactory.openSession();
 		Transaction t  = null;
 		List<Region> regionList = new ArrayList<>();

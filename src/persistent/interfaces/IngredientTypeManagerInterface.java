@@ -1,11 +1,6 @@
 package persistent.interfaces;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import org.hibernate.SQLQuery;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import persistent.classes.IngredientType;
 
@@ -14,7 +9,7 @@ public interface IngredientTypeManagerInterface {
 	 * 
 	 * @return a list containing all the names of the ingredients
 	 */
-	public List<IngredientType> getAllIngredientType();
+	public List<IngredientType> findAllIngredientType();
 	/**
 	 * Returns a list containing all the ingredients' names, that
 	 * matches the given string name

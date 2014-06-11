@@ -14,12 +14,17 @@ public interface ComposedOfManagerInterface {
 	 * @return a list containing all the ingredients
 	 */
 	public List<IngredientType> getIngredients(int recipeID);
+	
+	public List<Recipe> findRecipeByIngredient(int ingredient1);
+	public List<Recipe> findRecipeByIngredient(int ingredient1, int ingredient2);
+	public List<Recipe> findRecipeByIngredient(int ingredient1, int ingredient2, int ingredient3);
+	
 	/**
 	 * Return rezept ids
 	 * @param lz
 	 * @return
 	 */
-	public List<Recipe> findRezeptByIngredient(List<IngredientType> lz);
+	public List<Recipe> findRecipeByIngredient(List<IngredientType> lz);
 	
 	/**
 	 * This function add the ingredients of a recipe identified by recipeID 

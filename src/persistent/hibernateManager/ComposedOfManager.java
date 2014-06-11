@@ -3,7 +3,6 @@ package persistent.hibernateManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -83,9 +82,12 @@ public class ComposedOfManager extends PersistentManager implements ComposedOfMa
 		}
 		return ingredientTypeList;
 	}
-
+	
+	
+	
+		
 	@Override
-	public List<Recipe> findRezeptByIngredient(List<IngredientType> lz) {
+	public List<Recipe> findRecipeByIngredient(List<IngredientType> lz) {
 		if(lz.isEmpty()){
 			System.err.println("The given list is empty");
 			return null;
@@ -112,6 +114,51 @@ public class ComposedOfManager extends PersistentManager implements ComposedOfMa
 		}
 		session.close();
 		return lr;
+	}
+
+	
+	public List<Recipe> execFindrecipeByIngredientQuery(String query){
+		List<Recipe> recipes = new ArrayList<>();
+		Transaction t = null;
+		try {
+			Session session = sessionFactory.openSession();
+			t = session.beginTransaction();
+				
+			
+			
+			recipes = (List<Recipe>) session.createSQLQuery(query).addEntity("r", Recipe.class).list();
+			
+			
+		} catch(Exception  e){
+			if(t != null)
+				t.rollback();
+			e.printStackTrace();
+		}
+		return recipes;
+		
+		
+	}
+	
+	@Override
+	public List<Recipe> findRecipeByIngredient(int ingredient1) {
+		String query = "SELECT DISTINCT r.* FROM COMPOSEDOF AS c JOIN RECIPE r ON c.RECIPEID=r.ID WHERE c.INGREDIENTTYPEID='" + ingredient1 + "'";
+		return execFindrecipeByIngredientQuery(query);
+	}
+
+
+	@Override
+	public List<Recipe> findRecipeByIngredient(int ingredient1, int ingredient2){
+		String query = "SELECT DISTINCT r.* FROM COMPOSEDOF AS c JOIN RECIPE r ON c.RECIPEID=r.ID WHERE c.INGREDIENTTYPEID='" + ingredient1 + "' OR  c.INGREDIENTTYPEID='" + ingredient2 + "'";
+		return execFindrecipeByIngredientQuery(query);
+	}
+
+
+	@Override
+	public List<Recipe> findRecipeByIngredient(int ingredient1,
+			int ingredient2, int ingredient3) {
+		String query = "SELECT DISTINCT r.* FROM COMPOSEDOF AS c JOIN RECIPE r ON c.RECIPEID=r.ID WHERE c.INGREDIENTTYPEID='" + ingredient1 + "' OR  c.INGREDIENTTYPEID='" + ingredient2 + "'" 
+				+ " OR c.INGREDIENTTYPE='" + ingredient3 + "'";
+		return execFindrecipeByIngredientQuery(query);
 	}
 	
 

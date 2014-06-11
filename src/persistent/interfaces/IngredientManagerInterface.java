@@ -1,5 +1,7 @@
 package persistent.interfaces;
 
+import java.util.List;
+
 import persistent.classes.Ingredient;
 
 public interface IngredientManagerInterface {
@@ -11,4 +13,10 @@ public interface IngredientManagerInterface {
 	 * @return true on success, false otherwise
 	 */
 	public boolean addIngredient(Ingredient ingredient);
+	
+	/**
+	 * 
+	 * 
+	 */
+	public List<Ingredient> findIngredientsByIngredientType(int ingredientTypeID);
 }

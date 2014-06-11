@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import persistent.classes.Rating;
+import persistent.classes.Recipe;
 import persistent.interfaces.RatingManagerInterface;
 
 public class RatingManager extends PersistentManager implements RatingManagerInterface{
@@ -14,19 +15,37 @@ public class RatingManager extends PersistentManager implements RatingManagerInt
 	}
 	
 	public boolean addRating(Rating rating){
-		Session session = sessionFactory.openSession();
+		if(rating == null)
+			return false;
+		int star = rating.getStar();
+		int recipeID = rating.getRecipeID();
+		boolean success = true;
 		Transaction t = null;
+		Session s = null;
 		try {
-			t = session.beginTransaction();
-			session.save(rating);
-			
-		} catch (Exception e){
-			if(t != null)
-				t.rollback();
+			s = sessionFactory.openSession();
+			t = s.beginTransaction();
+			Recipe recipe = HibernateUtil.getInstance().findRecipeById(recipeID);
+			if(recipe == null)
+				throw new Exception();
+			int numberOfRatings = recipe.getNumberOfRatings();
+			float averageRating = recipe.getAverageRating();
+			recipe.setAverageRating((averageRating * numberOfRatings + star)/(numberOfRatings + 1));
+			recipe.setNumberOfRatings(numberOfRatings + 1);
+			s.saveOrUpdate(recipe);
+			s.saveOrUpdate(rating);
+			t.commit();
+		} catch(Exception e){
+			success = false;
+			t.rollback();
+		} finally {
+			s.close();
 		}
-		t.commit();
-		
-		return true;
+		return success;
 	}
+
+	
+	
+	
 	
 }

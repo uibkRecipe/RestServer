@@ -23,5 +23,9 @@
         <property name="longitude" type="double">
             <column name="LONGITUDE" />
         </property>
+        
+        <property name="cities" type="int">
+        	<column name="CITIES" />
+        </property>
     </class>
 </hibernate-mapping>

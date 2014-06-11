@@ -2,15 +2,12 @@ package persistent.hibernateManager;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.List;
 
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import persistent.classes.User;
-import persistent.help.ByteConverter;
 import persistent.interfaces.UserManagerInterface;
 
 
@@ -24,7 +21,7 @@ import persistent.interfaces.UserManagerInterface;
  */
 public class UserManager extends PersistentManager implements UserManagerInterface{
 
-	private ByteConverter byteConverter;
+	
 
 	/**
 	 * Constructor given a session it return an UserManager
@@ -33,25 +30,26 @@ public class UserManager extends PersistentManager implements UserManagerInterfa
 	 */
 	public UserManager(SessionFactory sessionFactory) {
 		super(sessionFactory);
-	
-		ByteConverter byteConverter = new ByteConverter();
 	}
 
 	
 	public boolean addUser(User user) {
 		boolean success = true;
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
+		Session session = null;
+		Transaction t = null; 
 		/** If the object is not already contained **/
 		try {
+			session = sessionFactory.openSession();
+			t = session.beginTransaction();
 			session.save(user);
-			session.getTransaction().commit();
+			t.commit();
 		} catch (Exception e) {
-			try{
-				session.getTransaction().rollback();
-			}catch(Exception e1){}
+			if(t != null)
+				t.rollback();
+			System.out.println("We are sorry but your username already exists");
 			success = false;
 		} finally {
+			
 			session.close();
 		}
 		return success;
@@ -63,12 +61,17 @@ public class UserManager extends PersistentManager implements UserManagerInterfa
 		User u = null;
 		
 			
-		session.beginTransaction();
+		Transaction t = null; 
 		try {
+			t = session.beginTransaction();
 			u = (User) session.get(User.class, userName);
 		} catch (Exception e) {
+			if(t != null)
+				t.rollback();
 			System.out.println("User " + userName + "could not be found");
-		} 
+		} finally {
+			t.commit();
+		}
 		session.close();
 		return u;
 	}
@@ -121,45 +124,90 @@ public class UserManager extends PersistentManager implements UserManagerInterfa
 		u.setFoto(binaryFile);
 		session.save(u);
 		session.getTransaction().commit();
-		
+		session.close();
 		return success;
 	}
 	
 
 	
 	
-	public boolean setUserAsNotActive(User u){
+	public boolean setUserAsNotActive(String username){
+		User u = this.findUserById(username);
 		boolean success = true;
 		Session session = sessionFactory.openSession();
-		Transaction t = session.beginTransaction();
-		u.setIsActive(0);
+		Transaction t = null;
+		
 		try {
-			session.update(u);
+			t = session.beginTransaction();
+			u.setIsActive(0);
+			session.saveOrUpdate(u);
+			
 		} catch(Exception e){
 			e.printStackTrace();
-			t.rollback();
+			if(t != null)
+				t.rollback();
 			success = false;
+		} finally {
+			t.commit();
 		}
-		t.commit();
-		return success;
+			return success;
 	}
 	
 	
 	public boolean setUserAsActive(String username){
 		boolean success = true;
 		Session session = sessionFactory.openSession();
-		Transaction t = session.beginTransaction();
+		Transaction t = null;
 		
-		User u  = this.findUserById(username);
-		u.setIsActive(1);
+	
 		try {
-			session.update(u);
+			User u  = this.findUserById(username);
+			if(u == null)
+				throw new Exception();
+			u.setIsActive(1);
+			t = session.beginTransaction();
+			session.saveOrUpdate(u);
 		} catch(Exception e){
+			System.out.println("Hello World");
 			e.printStackTrace();
-			t.rollback();
+			if(t != null)
+				t.rollback();
 			success = false;
 		}
 		t.commit();
+		return success;
+	}
+
+
+	@Override
+	public boolean changePassword(String username, String oldPassword,
+			String newPassword, String newPasswordConfirm) {
+		User u = this.logIn(username, oldPassword);
+		boolean success = true;
+		if(u == null){
+			System.out.println("The given old password is not correct");
+			return false;
+		}
+		if(!newPassword.equals(newPasswordConfirm)){
+			System.out.println("The given new passwords are different");
+			return false;
+		}
+		Session s = sessionFactory.openSession();
+		Transaction t = null;
+		try {
+			t = s.beginTransaction();
+		
+			u.setPassword(newPassword);
+			s.update(u);
+		} catch(Exception e) {
+			if(t != null)
+				t.rollback();
+			success = false;
+		} finally {
+			t.commit();
+			s.close();
+		}
+		
 		return success;
 	}
 	

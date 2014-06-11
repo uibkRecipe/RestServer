@@ -1,5 +1,7 @@
 package persistent.hibernateManager;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +9,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import persistent.classes.Category;
 import persistent.classes.Recipe;
 import persistent.interfaces.RecipeManagerInterface;
 
@@ -30,7 +31,7 @@ public class RecipeManager extends PersistentManager implements RecipeManagerInt
 			lr = (List<Recipe>) session.createSQLQuery("SELECT {Recipe.*} FROM RECIPE {Recipe} WHERE AUTOR='" + username + "'")
 				    .addEntity("Recipe", Recipe.class).list();
 		} catch (Exception e){
-			
+			e.printStackTrace();
 			lr = null;
 			t.rollback();
 		}
@@ -40,6 +41,7 @@ public class RecipeManager extends PersistentManager implements RecipeManagerInt
 		return lr;
 		
 	}
+	
 	
 	
 	/**
@@ -89,25 +91,105 @@ public class RecipeManager extends PersistentManager implements RecipeManagerInt
 	}
 
 	
-	public List<Recipe> getRezeptByCategory(Category C) {
-	
-		return null;
+	@SuppressWarnings("unchecked")
+	public List<Recipe> findRecipeByCategory(String category) {
+		if(category.equals("") || category == null)
+			return findRecipeByCategory();
+		List<Recipe> lr = new ArrayList<Recipe>();
+		Session session = sessionFactory.openSession();
+		Transaction t = null;
+		try {
+			t  = session.beginTransaction();
+			lr = (List<Recipe>) session.createSQLQuery("SELECT * FROM RECIPE  WHERE CATEGORY='" + category + "'").addEntity(Recipe.class).list();
+		} catch (Exception e){
+			if(t != null)
+				t.rollback();
+			e.printStackTrace();
+		}
+		return lr;
 	}
 
 	
-	public List<Recipe> getRezeptByCategory() {
+	@SuppressWarnings("unchecked")
+	public List<Recipe> findRecipeByCategory() {
+		List<Recipe> lr = new ArrayList<Recipe>();
+		Session session = sessionFactory.openSession();
+		Transaction t = null;
+		try {
+			t = session.beginTransaction();
+			lr = (List<Recipe>) session.createSQLQuery("SELECT r.* FROM RECIPE r").addEntity("r", Recipe.class).list();
+		} catch (Exception e){
+			if(t != null)
+				t.rollback();
+			e.printStackTrace();
+		}
+		return lr;
+	}
+	
+
+
+
+
+
+	@Override
+	public boolean setRecipeFoto(String username, int recipeID, File f) {
+	
+		if(f == null){
+			return false;
+		}
+		Recipe r = findRecipeById(recipeID);
 		
+		Session session = sessionFactory.openSession();
+		boolean success = true;
+		byte [] binaryFile = new byte [(int)f.length()];
+		Transaction t = null; 
+		try {
+			t = session.beginTransaction();
+			FileInputStream fileInputStream = new FileInputStream(f);
+			fileInputStream.read(binaryFile);
+			fileInputStream.close();
+		} catch(Exception e){
+			e.printStackTrace();
+			success = false;
+		}
+		r.setFoto(binaryFile);
+		
+		session.saveOrUpdate(r);
+		session.getTransaction().commit();
+			
+		return success;
+		}
+
+
+
+
+	@Override
+	public Recipe findRecipeById(int recipeID) {
+		Session session = sessionFactory.openSession();
+		Transaction t = null;
+		try {
+			t = session.beginTransaction();
+		} catch(Exception e){
+			if(t != null)
+				t.rollback();
+		}
+		
+		return (Recipe) session.get(Recipe.class, recipeID);
+	
+	}
+	
+	public List<Recipe> findRecipeByTime(int time){
+	
 		return null;
 	}
-	public byte [] getFoto(){
-		// TO DO
-		return new byte[0];
+	
+	public List<Recipe> findRecipeByName(String name){
+		//Like 
+		return null;
 	}
-	/*public String getTitle(){
-		//TO DO
-		
-	}
-	public String getDescriptionShort(){
-		//Erster Satz 50 character
-	}*/
+
+
+
+
+	
 }

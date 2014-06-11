@@ -20,11 +20,18 @@
         <property name="lastname" type="java.lang.String" access="field">
             <column name="LASTNAME" />
         </property>
-        <property name="isActive" type="int">
+        <property name="isActive" type="int" >
         	<column name="ISACTIVE" />
         </property>
          
-
+		<property name="city" type="int" access="field">
+			<column name="CITY" />
+		</property>
+		
+		<property name="country" type="java.lang.String" access="field">
+			<column name="COUNTRY"/>
+		</property>
+		
         <property name="foto" type="binary">
             <column name="FOTO"/>
         </property>

@@ -1,11 +1,6 @@
 package persistent.interfaces;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import org.hibernate.SQLQuery;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import persistent.classes.Country;
 
@@ -22,7 +17,7 @@ public interface CountryManagerInterface {
 	 * 
 	 * @return a list containing all the names of the countries
 	 */
-	public List<String> getCountryList();
+	public List<Country> getCountryList();
 
 	/**
 	 * This function returns a country instance with the (unique) code equals to
@@ -31,7 +26,7 @@ public interface CountryManagerInterface {
 	 * @param countryCode
 	 * @return the country with CODE equals to countryCode
 	 */
-	public Country getCountryByCode(String countryCode);
+	public Country findCountryByCode(String countryCode);
 
 	/**
 	 * This function returns a list of countries' names, that matches the given
@@ -46,7 +41,7 @@ public interface CountryManagerInterface {
 	/**
 	 * 
 	 * @param countryName
-	 * @return
+	 * @return CountryCode
 	 */
 	public String findCountryCodeByName(String countryName);
 	
