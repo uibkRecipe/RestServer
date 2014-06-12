@@ -2,7 +2,6 @@ package rest;
 
 
 
-import java.io.File;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -36,6 +35,7 @@ import persistent.help.CO2Calculation;
 import persistent.hibernateManager.CityManager;
 import persistent.hibernateManager.ComposedOfManager;
 import persistent.hibernateManager.CountryManager;
+import persistent.hibernateManager.FavoriteRecipeManager;
 import persistent.hibernateManager.FriendManager;
 import persistent.hibernateManager.IngredientManager;
 import persistent.hibernateManager.IngredientTypeManager;
@@ -63,16 +63,17 @@ public class HibernateManager {
 	private SessionFactory sessionFactory;
 	StandardServiceRegistryBuilder ssrb;
 
-	private CityManager cityManager;
-	private ComposedOfManager composedOfManager;
-	private CountryManager countryManager;
-	private FriendManager friendManager;
-	private IngredientManager ingredientManager;
-	private IngredientTypeManager ingredientTypeManager;
-	private RatingManager ratingManager;
-	private RecipeManager recipeManager;
-	private RegionManager regionManager;
-	private UserManager userManager;
+	private CityManager			cityManager;
+	private ComposedOfManager		composedOfManager;
+	private CountryManager 		countryManager;
+	private FavoriteRecipeManager	favoriteRecipeManager;
+	private FriendManager			friendManager;
+	private IngredientManager 		ingredientManager;
+	private IngredientTypeManager	ingredientTypeManager;
+	private RatingManager 			ratingManager;
+	private RecipeManager 			recipeManager;
+	private RegionManager			regionManager;
+	private UserManager 			userManager;
 
 	/**
 	 * Constructor return a new HibernateManager
@@ -87,6 +88,7 @@ public class HibernateManager {
 		cityManager = new CityManager(sessionFactory);
 		composedOfManager = new ComposedOfManager(sessionFactory);
 		countryManager = new CountryManager(sessionFactory);
+		favoriteRecipeManager = new FavoriteRecipeManager(sessionFactory);
 		friendManager = new FriendManager(sessionFactory);
 		ingredientManager = new IngredientManager(sessionFactory);
 		ingredientTypeManager = new IngredientTypeManager(sessionFactory);
@@ -350,6 +352,7 @@ public class HibernateManager {
 
 	@GET
 	@Path("/findRecipeTime/{minTime}/{maxTime}")
+	@Produces(MediaType.APPLICATION_JSON)
 	public List<Recipe> findRecipeByTime(@PathParam("minTime") int mintime, @PathParam("maxTime") int maxtime) {
 		return recipeManager.findRecipeByTime(mintime, maxtime);
 	}
@@ -434,30 +437,30 @@ public class HibernateManager {
 		}
 		return Response.status(200).entity(false).build();
 	}
-//	
-//	@GET
-//	@Path("/findRecipe/{i1}")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public List<Recipe> findRecipeByIngredient(@PathParam("i1") int ingredient1) {
-//		return composedOfManager.findRecipeByIngredient(ingredient1);
-//	}
-//
-//
-//	@GET
-//	@Path("/findRecipe/{i1}/{i2}")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public List<Recipe> findRecipeByIngredient(@PathParam("i1") int ingredient1, @PathParam("i2") int ingredient2) {
-//		return composedOfManager.findRecipeByIngredient(ingredient1, ingredient2);
-//	}
-//
-//	@GET
-//	@Path("/findRecipe/{i1}/{i2}/{i3}")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public List<Recipe> findRecipeByIngredient(@PathParam("i1") int ingredient1, @PathParam("i2") int ingredient2, @PathParam("i3") int ingredient3) {
-//		return composedOfManager.findRecipeByIngredient(ingredient1, ingredient2, ingredient3);
-//	}
-//
-//	
+	
+	@GET
+	@Path("/findRecipe1/{i1}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Recipe> findRecipeByIngredient(@PathParam("i1") int ingredient1) {
+		return composedOfManager.findRecipeByIngredient(ingredient1);
+	}
+
+
+	@GET
+	@Path("/findRecipe2/{i1}/{i2}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Recipe> findRecipeByIngredient(@PathParam("i1") int ingredient1, @PathParam("i2") int ingredient2) {
+		return composedOfManager.findRecipeByIngredient(ingredient1, ingredient2);
+	}
+
+	@GET
+	@Path("/findRecipe3/{i1}/{i2}/{i3}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Recipe> findRecipeByIngredient(@PathParam("i1") int ingredient1, @PathParam("i2") int ingredient2, @PathParam("i3") int ingredient3) {
+		return composedOfManager.findRecipeByIngredient(ingredient1, ingredient2, ingredient3);
+	}
+
+	
 	 /************************************************************************
 	 *
 	 * Ingredient
@@ -472,13 +475,13 @@ public class HibernateManager {
 		}
 		return Response.status(200).entity(false).build();
 	}
-//	
-//	@GET
-//	@Path("/finIngredientByType/{type}")
-//	public List<Ingredient> findIngredientsByIngredientType(@PathParam("type") int ingredientTypeID) {
-//		return ingredientManager.findIngredientsByIngredientType(ingredientTypeID);
-//	}
-//
+	
+	@GET
+	@Path("/findIngredientByType/{type}")
+	public List<Ingredient> findIngredientsByIngredientType(@PathParam("type") int ingredientTypeID) {
+		return ingredientManager.findIngredientsByIngredientType(ingredientTypeID);
+	}
+
 	 /***************************************************************************
 	 *
 	 * Rating
@@ -506,5 +509,37 @@ public class HibernateManager {
 			@PathParam("countryCode") String Code) {
 		return regionManager.findRegionByCountryCode(Code);
 	}
+	
+	/******************************************************************
+	 * 
+	 * Miscellaneous 
+	 * 
+	 *
+	 * 
+	 *******************************************************************/
+	
+
+	@GET
+	@Path("/findFavRecipe/{username}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Recipe> findFavoriteRecipe(@PathParam("username") String username) {
+		return favoriteRecipeManager.findFavoriteRecipe(username);
+	}
+
+	@POST
+	@Path("/addFavRecipe/{username}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public boolean addFavoriteRecipe(int recipeID, @PathParam("username") String username) {
+		return favoriteRecipeManager.addFavoriteRecipe(recipeID, username);
+	}
+
+
+	@POST
+	@Path("/addCooked/{id}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public boolean addCooked(@PathParam("id") int recipeID) {
+		return recipeManager.addCooked(recipeID);
+	}
+
 
 }
