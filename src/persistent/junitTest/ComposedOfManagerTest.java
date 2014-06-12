@@ -11,7 +11,7 @@ public class ComposedOfManagerTest extends PersistentManagerTest{
 
 	@Test
 	public void getIngredients() {
-		List<IngredientType> l = hm.getIngredients(2);
+		List<IngredientType> l = hm.getIngredients(2).getIngredients();
 		assertEquals(l.size(), 1);
 	}
 

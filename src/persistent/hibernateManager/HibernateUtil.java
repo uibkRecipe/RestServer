@@ -9,23 +9,15 @@ import org.hibernate.cfg.Configuration;
 
 import persistent.classes.City;
 import persistent.classes.Country;
+import persistent.classes.FavoriteRecipe;
 import persistent.classes.Ingredient;
 import persistent.classes.IngredientType;
 import persistent.classes.Rating;
 import persistent.classes.Recipe;
+import persistent.classes.RecipeIngredients;
 import persistent.classes.Region;
 import persistent.classes.User;
-import persistent.interfaces.CityManagerInterface;
-import persistent.interfaces.ComposedOfManagerInterface;
-import persistent.interfaces.CountryManagerInterface;
-import persistent.interfaces.FriendManagerInterface;
 import persistent.interfaces.HibernateUtilInterface;
-import persistent.interfaces.IngredientManagerInterface;
-import persistent.interfaces.IngredientTypeManagerInterface;
-import persistent.interfaces.RatingManagerInterface;
-import persistent.interfaces.RecipeManagerInterface;
-import persistent.interfaces.RegionManagerInterface;
-import persistent.interfaces.UserManagerInterface;
 /**
  * Fassade for hibernate
  * @author mirko
@@ -36,16 +28,17 @@ public class HibernateUtil implements HibernateUtilInterface{
 	private SessionFactory 					sessionFactory; 
 	StandardServiceRegistryBuilder 			ssrb;
 	
-	private CityManagerInterface 			cityManager;
-	private ComposedOfManagerInterface 		composedOfManager;
-	private CountryManagerInterface 		countryManager;
-	private FriendManagerInterface 			friendManager;
-	private IngredientManagerInterface 		ingredientManager;
-	private IngredientTypeManagerInterface 	ingredientTypeManager;
-	private RatingManagerInterface 			ratingManager;
-	private RecipeManagerInterface 			recipeManager;
-	private RegionManagerInterface 			regionManager;
-	private UserManagerInterface 			userManager;
+	private CityManager			cityManager;
+	private ComposedOfManager		composedOfManager;
+	private CountryManager 		countryManager;
+	private FavoriteRecipeManager	favoriteRecipeManager;
+	private FriendManager			friendManager;
+	private IngredientManager 		ingredientManager;
+	private IngredientTypeManager	ingredientTypeManager;
+	private RatingManager 			ratingManager;
+	private RecipeManager 			recipeManager;
+	private RegionManager			regionManager;
+	private UserManager 			userManager;
 	
 	
 	
@@ -76,6 +69,7 @@ public class HibernateUtil implements HibernateUtilInterface{
 		cityManager = new CityManager(sessionFactory);
 		composedOfManager = new ComposedOfManager(sessionFactory);
 		countryManager = new CountryManager(sessionFactory);
+		favoriteRecipeManager = new FavoriteRecipeManager(sessionFactory);
 		friendManager = new FriendManager(sessionFactory);
 		ingredientManager = new IngredientManager(sessionFactory);
 		ingredientTypeManager = new IngredientTypeManager(sessionFactory);
@@ -83,6 +77,7 @@ public class HibernateUtil implements HibernateUtilInterface{
 		recipeManager = new RecipeManager(sessionFactory);
 		regionManager = new RegionManager(sessionFactory);
 		userManager = new UserManager(sessionFactory);
+		
 	}
 	
 	
@@ -269,6 +264,19 @@ public class HibernateUtil implements HibernateUtilInterface{
 	public List<Recipe> getAllRecipes() {
 		return recipeManager.getAllRecipes();
 	}
+	
+	@Override
+	public List<Recipe> findRecipeByName(String name) {
+		return recipeManager.findRecipeByName(name);
+	}
+
+
+	@Override
+	public List<Recipe> findRecipeByTime(int mintime, int maxtime) {
+		return recipeManager.findRecipeByTime(mintime, maxtime);
+	}
+	
+	
 	/***************************************************************
 	 * 
 	 * IngredientType manager
@@ -302,7 +310,7 @@ public class HibernateUtil implements HibernateUtilInterface{
 	 * 
 	 ***********************************************************/
 	@Override
-	public List<IngredientType> getIngredients(int recipeID) {
+	public RecipeIngredients getIngredients(int recipeID) {
 		return composedOfManager.getIngredients(recipeID);	
 	}
 	@Override
@@ -385,6 +393,45 @@ public class HibernateUtil implements HibernateUtilInterface{
 		return cityManager.findCityByID(u.getCity());
 		
 	}
+
+
+	@Override
+	public List<Recipe> findRecipeByTime(int time) {
+		return recipeManager.findRecipeByTime(time);
+	}
+
+
+	@Override
+	public List<Recipe> findFavoriteRecipe(String username) {
+		return favoriteRecipeManager.findFavoriteRecipe(username);
+	}
+
+
+	@Override
+	public boolean addFavoriteRecipe(int recipeID, String username) {
+		return favoriteRecipeManager.addFavoriteRecipe(recipeID, username);
+	}
+
+
+	@Override
+	public boolean addFavoriteRecipe(FavoriteRecipe fr) {
+		return  favoriteRecipeManager.addFavoriteRecipe(fr);
+	}
+
+
+	@Override
+	public Region findRegionByCountryAndRegionName(String Code, String Name) {
+		return regionManager.findRegionByCountryAndRegionName(Code, Name);
+	}
+
+
+	@Override
+	public boolean addCooked(int recipeID) {
+		return recipeManager.addCooked(recipeID);
+	}
+
+
+
 
 
 

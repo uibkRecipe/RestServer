@@ -22,6 +22,7 @@
    		<mapping resource="City.hbm.xml"/>
    		<mapping resource="ComposedOf.hbm.xml"/>
    		<mapping resource="Country.hbm.xml"/>
+   		<mapping resource="FavoriteRecipe.hbm.xml"/>
    		<mapping resource="Friend.hbm.xml"/>
    		<mapping resource="Ingredient.hbm.xml"/>
    		<mapping resource="IngredientType.hbm.xml"/>

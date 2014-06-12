@@ -10,6 +10,7 @@ import org.hibernate.Transaction;
 import persistent.classes.ComposedOf;
 import persistent.classes.IngredientType;
 import persistent.classes.Recipe;
+import persistent.classes.RecipeIngredients;
 import persistent.interfaces.ComposedOfManagerInterface;
 
 public class ComposedOfManager extends PersistentManager implements ComposedOfManagerInterface{
@@ -37,14 +38,16 @@ public class ComposedOfManager extends PersistentManager implements ComposedOfMa
 				
 			session.save(new ComposedOf(recipeID, ingredientID, quantity));
 				
+			if(t != null)
+				t.commit();
+			
 		} catch(Exception  e){
 			if(t != null)
 				t.rollback();
 			success = false;
 			e.printStackTrace();
 		}
-		if(t != null)
-			t.commit();
+		
 		return success;
 	}
 	
@@ -62,9 +65,10 @@ public class ComposedOfManager extends PersistentManager implements ComposedOfMa
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<IngredientType> getIngredients(int recipeID) {
-		
+	public RecipeIngredients getIngredients(int recipeID) {
+		RecipeIngredients ri = new RecipeIngredients();
 		List<IngredientType> ingredientTypeList = new ArrayList<IngredientType>();
+		List<String> quantity;
 		Transaction t = null;
 		try {
 			Session session = sessionFactory.openSession();
@@ -73,14 +77,22 @@ public class ComposedOfManager extends PersistentManager implements ComposedOfMa
 			String query = "SELECT i.* from INGREDIENTTYPE as i join COMPOSEDOF as co ON i.ID=co.INGREDIENTTYPEID AND co.RECIPEID='" + recipeID + "'";
 			
 			ingredientTypeList = (List<IngredientType>) session.createSQLQuery(query).addEntity("i", IngredientType.class).list();
-			
-			
+			query = "SELECT c.QUANTITY from INGREDIENTTYPE as i join COMPOSEDOF as co ON i.ID=co.INGREDIENTTYPEID AND co.RECIPEID='" + recipeID + "'";
+			quantity = (List<String>) session.createSQLQuery(query).list();
+			if(ingredientTypeList.size() == quantity.size()){
+				ri.setIngredients(ingredientTypeList);
+				ri.setQuantities(quantity);
+			}
+			else {
+				return null;
+			}
+				
 		} catch(Exception  e){
 			if(t != null)
 				t.rollback();
 			e.printStackTrace();
 		}
-		return ingredientTypeList;
+		return ri;
 	}
 	
 	

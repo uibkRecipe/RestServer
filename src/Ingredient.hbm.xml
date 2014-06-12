@@ -9,7 +9,7 @@
             <generator class="assigned" />
         </id>
         <property name="ingredientTypeID" type="int">
-            <column name="INGREDIENTSTYPEID" />
+            <column name="INGREDIENTTYPEID" />
         </property>
         <property name="city" type="int">
             <column name="CITY" />

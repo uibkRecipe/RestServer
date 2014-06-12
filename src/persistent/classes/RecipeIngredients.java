@@ -43,4 +43,12 @@ public class RecipeIngredients {
 	public List<String> getQuantities() {
 		return quantities;
 	}
+
+	public void setQuantities(List<String> quantities) {
+		this.quantities = quantities;
+	}
+
+	public void setIngredients(List<IngredientType> ingredients) {
+		this.ingredients = ingredients;
+	}
 }

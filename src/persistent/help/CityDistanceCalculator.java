@@ -4,8 +4,22 @@ import persistent.classes.City;
 import persistent.hibernateManager.HibernateUtil;
 
 public class CityDistanceCalculator implements CityDistance {
+	
+	private static CityDistanceCalculator instance = null;
+	
+	private CityDistanceCalculator(){
+	
+	}
+	
+	
 
+	public static CityDistanceCalculator getInstance() {
+		if (instance == null) {
+			instance = new CityDistanceCalculator();
+		}
 
+		return instance;
+	}
 	
 	public  double calcDistance(double latitudeA, double longitudeA,
 			double latitudeB, double longitudeB) {
@@ -32,8 +46,8 @@ public class CityDistanceCalculator implements CityDistance {
 	
 	public static void main(String[] args) {
 		//B = BOLZANO A = VERONA
-		System.out.println(HibernateUtil.getInstance().findCityByID(1000) + " " + HibernateUtil.getInstance().findCityByID(1001));;
-		System.out.println(new CityDistanceCalculator().calcDistance(1000, 1001));
+		System.out.println(HibernateUtil.getInstance().findCityByID(2000) + " " + HibernateUtil.getInstance().findCityByID(22059));;
+		System.out.println(new CityDistanceCalculator().calcDistance(2000, 22059));
 		
 	}
 

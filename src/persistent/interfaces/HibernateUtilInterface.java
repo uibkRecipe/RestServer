@@ -1,5 +1,7 @@
 package persistent.interfaces;
 
+import java.util.List;
+
 import persistent.classes.City;
 
 
@@ -14,6 +16,7 @@ extends
 CityManagerInterface, 
 ComposedOfManagerInterface,
 CountryManagerInterface,
+FavoriteRecipeManagerInterface,
 FriendManagerInterface,
 IngredientManagerInterface, 
 IngredientTypeManagerInterface, 
@@ -33,6 +36,5 @@ UserManagerInterface
 	public City getUserPosition(String username);
 	
 	
-
 	 
 }

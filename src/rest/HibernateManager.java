@@ -1,4 +1,4 @@
-package persistent.hibernateManager;
+package rest;
 
 
 
@@ -9,6 +9,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -31,6 +32,17 @@ import persistent.classes.Recipe;
 import persistent.classes.RecipeIngredients;
 import persistent.classes.Region;
 import persistent.classes.User;
+import persistent.help.CO2Calculation;
+import persistent.hibernateManager.CityManager;
+import persistent.hibernateManager.ComposedOfManager;
+import persistent.hibernateManager.CountryManager;
+import persistent.hibernateManager.FriendManager;
+import persistent.hibernateManager.IngredientManager;
+import persistent.hibernateManager.IngredientTypeManager;
+import persistent.hibernateManager.RatingManager;
+import persistent.hibernateManager.RecipeManager;
+import persistent.hibernateManager.RegionManager;
+import persistent.hibernateManager.UserManager;
 
 /**
  * Fassade for hibernate
@@ -129,10 +141,10 @@ public class HibernateManager {
 	public User findUserById(@PathParam("username") String userName) {
 		return userManager.findUserById(userName);
 	}
-//
-//	// public boolean setUserFoto(User u, File f){
-//	// return userManager.setUserFoto(u, f);
-//	// }
+
+//	 public boolean setUserFoto(User u, File f){
+//		 return userManager.setUserFoto(u, f);
+//	 }
 //
 //	//
 //	// public boolean setUserAsNotActive(User u){
@@ -143,7 +155,21 @@ public class HibernateManager {
 //	// public boolean setUserAsActive(String username){
 //	// return userManager.setUserAsActive(username);
 //	// }
-//
+	
+	@PUT
+	@Path("changePassword/{username}/{oldPassword}/{newPassword}/{newPasswordConfirm}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response changePassword(@PathParam("username") String username,
+			@PathParam("oldPassword") String oldPassword,
+			@PathParam("newPassword") String newPassword,
+			@PathParam("newPasswordConfirm") String newPasswordConfirm) {
+		if (userManager.changePassword(username, oldPassword, newPassword,
+				newPasswordConfirm)) {
+			return Response.status(200).entity(true).build();
+		}
+		return Response.status(200).entity(false).build();
+	}
+			
 //	/****************************************************************
 //	 * 
 //	 * Country Functionalities
@@ -289,17 +315,21 @@ public class HibernateManager {
 	}
 	
 	
-	
-	public List<Recipe> findRecipeByCategory(String category) {
+	@GET
+	@Path("/findRecipe/{category}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Recipe> findRecipeByCategory(@PathParam("category") String category) {
 		return recipeManager.findRecipeByCategory(category);
 	}	
 
-	public boolean setRecipeFoto(String username, int recipeID, File f) {
-		return recipeManager.setRecipeFoto(username, recipeID, f);
-	}
+//	public boolean setRecipeFoto(String username, int recipeID, File f) {
+//		return recipeManager.setRecipeFoto(username, recipeID, f);
+//	}
 
-
-	public Recipe findRecipeById(int recipeID) {
+	@GET
+	@Path("/findRecipeID/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Recipe findRecipeById(@PathParam("id") int recipeID) {
 		return recipeManager.findRecipeById(recipeID);
 	}
 
@@ -308,6 +338,28 @@ public class HibernateManager {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Recipe> getAllRecipes() {
 		return recipeManager.getAllRecipes();
+	}
+	
+	@GET
+	@Path("/findRecipeName/{name}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Recipe> findRecipeByName(@PathParam("name") String name) {
+		return recipeManager.findRecipeByName(name);
+	}
+
+
+	@GET
+	@Path("/findRecipeTime/{minTime}/{maxTime}")
+	public List<Recipe> findRecipeByTime(@PathParam("minTime") int mintime, @PathParam("maxTime") int maxtime) {
+		return recipeManager.findRecipeByTime(mintime, maxtime);
+	}
+	
+	
+	@GET
+	@Path("/Co2Value/{recipeID}/{username}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Recipe calculateCO2(@PathParam("recipeID") int recipeID, @PathParam("username") String username){
+		return CO2Calculation.getInstance().calculateCO2(recipeID, username);
 	}
 
 //	public List<Recipe> getRezeptByCategory(Category C) {
@@ -318,17 +370,18 @@ public class HibernateManager {
 //		return recipeManager.getRezeptByCategory();
 //	}
 //
+	
 	/***************************************************************
 	 * 
 	 * IngredientType manager
 	 * 
 	 ***************************************************************/
-//	@GET
-//	@Path("/ingredientType")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public List<IngredientType> getAllIngredientType() {
-//		return ingredientTypeManager.getAllIngredientType();
-//	}
+	@GET
+	@Path("/ingredientType")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<IngredientType> findAlLIngredientType() {
+		return ingredientTypeManager.findAllIngredientType();
+	}
 
 	@GET
 	@Path("/ingredientType/{name}")
@@ -356,7 +409,7 @@ public class HibernateManager {
 	@GET
 	@Path("/ingredient/{ingredientId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<IngredientType> getIngredients(
+	public RecipeIngredients getIngredients(
 			@PathParam("ingredientId") int recipeID) {
 		return composedOfManager.getIngredients(recipeID);
 	}
@@ -381,13 +434,35 @@ public class HibernateManager {
 		}
 		return Response.status(200).entity(false).build();
 	}
-
-	//
-	// /************************************************************************
-	// *
-	// * Ingredient
-	// *
-	// ************************************************************************/
+//	
+//	@GET
+//	@Path("/findRecipe/{i1}")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public List<Recipe> findRecipeByIngredient(@PathParam("i1") int ingredient1) {
+//		return composedOfManager.findRecipeByIngredient(ingredient1);
+//	}
+//
+//
+//	@GET
+//	@Path("/findRecipe/{i1}/{i2}")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public List<Recipe> findRecipeByIngredient(@PathParam("i1") int ingredient1, @PathParam("i2") int ingredient2) {
+//		return composedOfManager.findRecipeByIngredient(ingredient1, ingredient2);
+//	}
+//
+//	@GET
+//	@Path("/findRecipe/{i1}/{i2}/{i3}")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public List<Recipe> findRecipeByIngredient(@PathParam("i1") int ingredient1, @PathParam("i2") int ingredient2, @PathParam("i3") int ingredient3) {
+//		return composedOfManager.findRecipeByIngredient(ingredient1, ingredient2, ingredient3);
+//	}
+//
+//	
+	 /************************************************************************
+	 *
+	 * Ingredient
+	 *
+	 ************************************************************************/
 	@POST
 	@Path("/addIngredient")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -397,7 +472,13 @@ public class HibernateManager {
 		}
 		return Response.status(200).entity(false).build();
 	}
-
+//	
+//	@GET
+//	@Path("/finIngredientByType/{type}")
+//	public List<Ingredient> findIngredientsByIngredientType(@PathParam("type") int ingredientTypeID) {
+//		return ingredientManager.findIngredientsByIngredientType(ingredientTypeID);
+//	}
+//
 	 /***************************************************************************
 	 *
 	 * Rating

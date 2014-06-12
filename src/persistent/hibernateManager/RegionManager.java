@@ -30,4 +30,21 @@ public class RegionManager extends PersistentManager implements RegionManagerInt
 		}
 		return regionList;
 	}
+
+	@Override
+	public Region findRegionByCountryAndRegionName(String code, String name) {
+		List<Region> regions = findRegionByCountryCode(code);
+		String n = name.toUpperCase();
+		for (Region region : regions) {
+			String tmp = region.getName().toUpperCase();
+			if(tmp.length() >= n.length()){
+				tmp = tmp.substring(0, n.length());
+				if(n.equals(tmp)){
+					System.out.println("YES");
+					return region;
+				}
+			}
+		}
+		return null;
+	}
 }

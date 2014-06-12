@@ -13,4 +13,7 @@ public interface RegionManagerInterface {
 	 * @return a List of region if the code is found, otherwise null
 	 */
 	public List<Region>  findRegionByCountryCode(String Code);
+	
+	
+	public Region findRegionByCountryAndRegionName(String Code, String Name);
 }

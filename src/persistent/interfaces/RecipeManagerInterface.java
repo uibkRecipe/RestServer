@@ -56,5 +56,16 @@ public interface RecipeManagerInterface {
 	 */
 	public Recipe findRecipeById(int recipeID);
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public  List<Recipe> getAllRecipes();
+	
+	
+	public List<Recipe> findRecipeByTime(int time);
+	public List<Recipe> findRecipeByName(String name);
+	public List<Recipe> findRecipeByTime(int mintime, int maxtime);
+	
+	public boolean addCooked(int recipeID);
 }

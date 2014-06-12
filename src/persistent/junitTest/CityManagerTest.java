@@ -1,10 +1,12 @@
 package persistent.junitTest;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 import persistent.classes.City;
+import persistent.classes.Country;
+import persistent.classes.Region;
 
 public class CityManagerTest  extends PersistentManagerTest{
 	
@@ -19,8 +21,14 @@ public class CityManagerTest  extends PersistentManagerTest{
 	public void twoSameCityTest(){
 		assertEquals(hm.findCityByName("Bolzano").get(0), hm.findCityByName("Bozen").get(0));
 		assertEquals(hm.findCityByName("Bozen"), hm.findCityByName("Bozen"));
+		City c1;
+		City c2;
+		Country country = hm.findCountryByCode("IT");
+		
+		Region r = hm.findRegionByCountryAndRegionName("IT", "PIEMONTE");
+		
 	}
-
+	
 
 	@Test
 	public void findCityByIDTest() {

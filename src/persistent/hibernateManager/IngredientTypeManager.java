@@ -32,8 +32,8 @@ implements IngredientTypeManagerInterface{
 		Session session = sessionFactory.openSession();
 		Transaction t = session.beginTransaction();
 		try {
-			SQLQuery query = session.createSQLQuery("SELECT NAME FROM INGREDIENTTYPE").addEntity(IngredientType.class);
-			lz = query.list();
+			SQLQuery query = session.createSQLQuery("SELECT * FROM INGREDIENTTYPE").addEntity(IngredientType.class);
+			lz = (List<IngredientType>)query.list();
 		} catch(Exception e){
 			t.rollback();
 		}
