@@ -79,7 +79,7 @@ public class CO2Calculation {
 		for (int i= 0; i<10 && i<recipes.size(); i++){
 			retRecipes.add(recipes.get(i));
 		}
-		return recipes;
+		return retRecipes;
 	}
 	
 }
