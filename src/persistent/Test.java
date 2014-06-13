@@ -17,8 +17,7 @@ public class Test {
 	
 		
 		HibernateUtil hm = HibernateUtil.getInstance();
-		hm.addCooked(3);
-	
+		System.out.println(hm.getIngredients(3).getQuantities());
 		hm.closeSession();
 	}
 }

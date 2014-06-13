@@ -1,3 +1,6 @@
+/City.hbm.xml
+/ComposedOf.hbm.xml
+/Country.hbm.xml
+/FavoriteRecipe.hbm.xml
 /persistent/
 /rest/
-/FavoriteRecipe.hbm.xml

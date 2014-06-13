@@ -77,7 +77,7 @@ public class ComposedOfManager extends PersistentManager implements ComposedOfMa
 			String query = "SELECT i.* from INGREDIENTTYPE as i join COMPOSEDOF as co ON i.ID=co.INGREDIENTTYPEID AND co.RECIPEID='" + recipeID + "'";
 			
 			ingredientTypeList = (List<IngredientType>) session.createSQLQuery(query).addEntity("i", IngredientType.class).list();
-			query = "SELECT c.QUANTITY from INGREDIENTTYPE as i join COMPOSEDOF as co ON i.ID=co.INGREDIENTTYPEID AND co.RECIPEID='" + recipeID + "'";
+			query = "SELECT co.QUANTITY from INGREDIENTTYPE as i join COMPOSEDOF as co ON i.ID=co.INGREDIENTTYPEID AND co.RECIPEID='" + recipeID + "'";
 			quantity = (List<String>) session.createSQLQuery(query).list();
 			if(ingredientTypeList.size() == quantity.size()){
 				ri.setIngredients(ingredientTypeList);

@@ -12,7 +12,7 @@ public class Recipe  {
 	int time;
 	int cooked;
 	int numberOfRatings;
-	Float averageRating;
+	float averageRating;
 	String preparation;
 	
 	String category;
@@ -21,15 +21,13 @@ public class Recipe  {
 	double distance;
 	
 	
-	
-
 
 	public Recipe(){
 		
 	}
 	
 	public Recipe(String autor, String name, String subtitle, int time,
-			String preparation) {
+			String preparation, String category) {
 		super();
 		this.autor = autor;
 		this.name = name;
@@ -37,6 +35,8 @@ public class Recipe  {
 		this.time = time;	
 		this.preparation = preparation;
 		this.cooked = 0;
+		this.averageRating = 0;
+		this.category = category;
 		///this.foto = foto;
 	}
 	
@@ -59,6 +59,8 @@ public class Recipe  {
 			e.printStackTrace();
 		}
 	}
+	
+	
 
 
 
