@@ -1,4 +1,4 @@
-package persistent.help;
+package rest;
 
 import persistent.classes.City;
 import persistent.hibernateManager.HibernateUtil;

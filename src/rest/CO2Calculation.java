@@ -1,5 +1,7 @@
-package persistent.help;
+package rest;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import persistent.classes.Ingredient;
@@ -61,6 +63,23 @@ public class CO2Calculation {
 		}
 		r.setDistance(distance);
 		return r;
+	}
+	
+	public List<Recipe> getCO2FriendlyRec(String username){
+		HibernateUtil hu = HibernateUtil.getInstance();
+		
+		List<Recipe> recipes = hu.getAllRecipes();
+		List<Recipe> retRecipes = new ArrayList<Recipe>();
+		for(int i=0; i<recipes.size(); i++){
+			Recipe r = recipes.get(i);
+			Recipe rNew = calculateCO2(r.getID(), username);
+			recipes.set(i, rNew);
+		}
+		Collections.sort(recipes, new CO2FriendlyComporator());
+		for (int i= 0; i<10 && i<recipes.size(); i++){
+			retRecipes.add(recipes.get(i));
+		}
+		return recipes;
 	}
 	
 }

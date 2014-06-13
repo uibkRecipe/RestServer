@@ -1,4 +1,4 @@
-package persistent.help;
+package rest;
 
 public interface  CityDistance {
 	

@@ -31,7 +31,6 @@ import persistent.classes.Recipe;
 import persistent.classes.RecipeIngredients;
 import persistent.classes.Region;
 import persistent.classes.User;
-import persistent.help.CO2Calculation;
 import persistent.hibernateManager.CityManager;
 import persistent.hibernateManager.ComposedOfManager;
 import persistent.hibernateManager.CountryManager;
@@ -52,7 +51,7 @@ import persistent.hibernateManager.UserManager;
  */
 // Will map the resource to the URL todos
 @Path("/manager")
-public class HibernateManager {
+public class RestManager {
 	// Allows to insert contextual objects into the class,
 	// e.g. ServletContext, Request, Response, UriInfo
 	@Context
@@ -78,7 +77,7 @@ public class HibernateManager {
 	/**
 	 * Constructor return a new HibernateManager
 	 */
-	public HibernateManager() {
+	public RestManager() {
 		Configuration configuration = new Configuration();
 		configuration.configure("hibernate.cfg.xml");
 		ssrb = new StandardServiceRegistryBuilder().applySettings(configuration
@@ -363,6 +362,13 @@ public class HibernateManager {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Recipe calculateCO2(@PathParam("recipeID") int recipeID, @PathParam("username") String username){
 		return CO2Calculation.getInstance().calculateCO2(recipeID, username);
+	}
+	
+	@GET
+	@Path("/getCO2FriendlyRec/{username}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Recipe> getCO2FriendlyRec(@PathParam("username") String username){
+		return CO2Calculation.getInstance().getCO2FriendlyRec(username);
 	}
 
 //	public List<Recipe> getRezeptByCategory(Category C) {

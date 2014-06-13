@@ -2,5 +2,13 @@
 /ComposedOf.hbm.xml
 /Country.hbm.xml
 /FavoriteRecipe.hbm.xml
+/Friend.hbm.xml
+/Ingredient.hbm.xml
+/IngredientType.hbm.xml
+/Rating.hbm.xml
+/Recipe.hbm.xml
+/Region.hbm.xml
+/User.hbm.xml
+/hibernate.cfg.xml
 /persistent/
 /rest/
