@@ -51,6 +51,7 @@ public class FriendManager extends PersistentManager implements FriendManagerInt
 		}catch (Exception e){
 			System.out.println("ERROR : " + e.getMessage());
 			ret = false;
+			session.getTransaction().rollback();
 		}
 		finally{
 			
