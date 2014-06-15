@@ -1,5 +1,6 @@
 package persistent.hibernateManager;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +27,8 @@ public class FriendManager extends PersistentManager implements FriendManagerInt
 		session.beginTransaction();
 		/** If the object is not already contained **/
 		try {
-			SQLQuery query = session.createSQLQuery("SELECT name2 FROM freunde WHERE name1='" + username + "'");
-			SQLQuery query1 = session.createSQLQuery("SELECT name1 FROM freunde WHERE name2='" + username + "'");
+			SQLQuery query = session.createSQLQuery("SELECT username2 FROM FRIEND WHERE username1='" + username + "'");
+			SQLQuery query1 = session.createSQLQuery("SELECT username1 FROM FRIEND WHERE username2='" + username + "'");
 			lf = (List<String>)query.list();
 			lf1 = (List<String>)query1.list();
 			lf.addAll(lf1);
@@ -50,8 +51,8 @@ public class FriendManager extends PersistentManager implements FriendManagerInt
 			session.getTransaction().commit();
 		}catch (Exception e){
 			System.out.println("ERROR : " + e.getMessage());
-			ret = false;
 			session.getTransaction().rollback();
+			ret = false;
 		}
 		finally{
 			
@@ -70,13 +71,14 @@ public class FriendManager extends PersistentManager implements FriendManagerInt
 		try {
 			t = session.beginTransaction();
 			session.delete(new Friend(username1, username2));
+			t.commit();
+
 			
 		} catch(Exception e){
 			if(t != null)
 				t.rollback();
 			e.printStackTrace();
 		} 
-		t.commit();
 		return ret;
 		
 	}
@@ -92,20 +94,25 @@ public class FriendManager extends PersistentManager implements FriendManagerInt
 		try {
 			t = session.beginTransaction();
 			SQLQuery query = session.createSQLQuery
-					("SELECT count(*) FROM freunde WHERE name1='" + username1 + "' AND name2='" + username2 + "'");
-			List<Integer> l = (List<Integer>)query.list();
-			count = l.get(0);
+					("SELECT count(*) FROM FRIEND WHERE username1='" + username1 + "' AND username2='" + username2 + "'");
+			List<BigInteger> l = (List<BigInteger>)query.list();
+			count = l.get(0).intValue();
 			query = session.createSQLQuery
-					("SELECT count(*) FROM freunde WHERE name2='" + username1 + "' AND name1='" + username2 + "'");
+					("SELECT count(*) FROM FRIEND WHERE username2='" + username1 + "' AND username1='" + username2 + "'");
 			
-			l = (List<Integer>)query.list();
-			count += l.get(0);
+			l = (List<BigInteger>)query.list();
+			count += l.get(0).intValue();
+			System.out.println(count);
 			if(count == 0)
 				exist = false;
-		} catch(Exception e){
-			t.rollback();
-		} finally {
 			session.getTransaction().commit();
+		} catch(Exception e){
+			if(t != null)
+				t.rollback();
+			e.printStackTrace();
+			
+		} finally {
+
 		}
 		
 		return exist;
